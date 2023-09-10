@@ -12,7 +12,7 @@ if 'running' not in st.session_state:
 with st.sidebar:
     st.title('Data-chain')
     choice=st.radio('Navigate through the app',['Upload your file','Profiling your columns','Train your model','Download the trained model'])
-    st.info('Data-Chain is your hassle-free data analysis companion. Upload your data, get automated insights, and train models without any coding. It's quick, simple, and perfect for non-coders.')
+    st.info("Data-Chain is your hassle-free data analysis companion. Upload your data, get automated insights, and train models without any coding. It's quick, simple, and perfect for non-coders.")
 
 if os.path.exists("data.csv"):
     df=pd.read_csv("data.csv",index_col=None)
