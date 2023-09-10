@@ -6,22 +6,32 @@ import pandas_profiling
 from ydata_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
 
+if 'running' not in st.session_state:
+    st.session_state.running = True
+
+# st.set_option('server.port', 8501)
+
+
 with st.sidebar:
     st.title('Data-chain')
     choice=st.radio('Navigate through the app',['Upload your file','Profiling your columns','Train your model','Download the trained model'])
     st.info('some information about the app in infobox')
 
-if os.path.exists("input_data.csv"):
-    df=pd.read_csv("input_data.csv",index_col=None)
+if os.path.exists("data.csv"):
+    df=pd.read_csv("data.csv",index_col=None)
 
 if choice=='Upload your file':
     st.title('Upload your data for modelling')
     file=st.file_uploader("Upload your data here")
-    if file:
-        df=pd.read_csv(file,index_col=None)
-        df.to_csv("input_data.csv",index=None)
-        st.dataframe(df)
-
+    try:
+        if file:
+            df=pd.read_csv(file,index_col=None)
+            df.to_csv("data.csv",index=None)
+            st.dataframe(df)
+    except FileNotFoundError as e:
+        pass
+    # if os.path.exists("input_data.csv"):
+    # df=pd.read_csv("input_data.csv",index_col=None)
 elif choice=='Profiling your columns':
     st.title("Automated Exploratory Data Analysis")
     try:
@@ -51,20 +61,21 @@ elif choice=='Train your model':
         st.dataframe(setup_df)
         best_model=compare_models()
         compare_df=pull()
-        st.info("This is the final model")
+        st.info("These are the model comparisions")
         st.dataframe(compare_df)
         best_model
-        save_model(best_model,'final_model')
+        # save_model(best_model,'final_model')
 
 elif choice=='Download the trained model':
     st.title("Download the model")
     with open("final_model.pkl",'rb') as f:
         st.download_button("Download the Model",f,"final_model.pkl")
+    
 
-os.remove('data.csv')
-os.remove('final_model.pkl')
-os.remove('data.csv')
-os.remove('profile_report.html')
-os.remove('model.pkl')
-os.remove('final_model.pkl')
-os.remove('input_data.csv')
+if not st.session_state.running:
+    os.remove('final_model.pkl')
+    os.remove('data.csv')
+    os.remove('profile_report.html')
+    os.remove('model.pkl')
+    os.remove('final_model.pkl')
+    os.remove('input_data.csv')
