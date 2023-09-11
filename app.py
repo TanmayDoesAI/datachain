@@ -37,7 +37,9 @@ elif choice=='Profiling your columns':
 
         profile_df.to_file("profile_report.html")
 
-        st.markdown("[Download the Profile Report as HTML](profile_report.html)")
+        st.title("Download the index.html")
+        with open("index.html",'rb') as f:
+            st.download_button("Download the index.html",f,"index.html")
 
     except NameError as e:
         st.write("It seems like you haven't uploaded your dataset, kindly upload it by going to `Upload your file` in the sidebar")
