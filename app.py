@@ -27,8 +27,7 @@ if choice=='Upload your file':
             st.dataframe(df)
     except FileNotFoundError as e:
         pass
-    # if os.path.exists("input_data.csv"):
-    # df=pd.read_csv("input_data.csv",index_col=None)
+
 elif choice=='Profiling your columns':
     st.title("Automated Exploratory Data Analysis")
     try:
@@ -37,9 +36,7 @@ elif choice=='Profiling your columns':
 
         profile_df.to_file("profile_report.html")
 
-        st.title("Download the index.html")
-        with open("index.html",'rb') as f:
-            st.download_button("Download the index.html",f,"index.html")
+        st.markdown("[Download the Profile Report as HTML](profile_report.html)")
 
     except NameError as e:
         st.write("It seems like you haven't uploaded your dataset, kindly upload it by going to `Upload your file` in the sidebar")
@@ -60,7 +57,7 @@ elif choice=='Train your model':
         st.dataframe(setup_df)
         best_model=compare_models()
         compare_df=pull()
-        st.info("These are the model comparisions")
+        st.info("These are the model comparisons")
         st.dataframe(compare_df)
         best_model
         save_model(best_model,'final_model')
@@ -69,7 +66,11 @@ elif choice=='Download the trained model':
     st.title("Download the model")
     with open("final_model.pkl",'rb') as f:
         st.download_button("Download the Model",f,"final_model.pkl")
-    
+
+elif choice=='Download the analysis file':
+    st.title("Download the index.html")
+    with open("index.html",'rb') as f:
+        st.download_button("Download the index.html",f,"index.html")
 
 if not st.session_state.running:
     os.remove('final_model.pkl')
@@ -78,3 +79,4 @@ if not st.session_state.running:
     os.remove('model.pkl')
     os.remove('final_model.pkl')
     os.remove('input_data.csv')
+    os.remove('index.html')  # Add this line to remove index.html
