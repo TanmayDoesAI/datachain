@@ -69,7 +69,7 @@ elif choice=='Download the trained model':
 
 elif choice=='Download the analysis file':
     st.title("Download the index.html")
-    with open("index.html",'rb') as f:
+    with open("profile_report.html",'rb') as f:
         st.download_button("Download the index.html",f,"index.html")
 
 if not st.session_state.running:
@@ -79,4 +79,4 @@ if not st.session_state.running:
     os.remove('model.pkl')
     os.remove('final_model.pkl')
     os.remove('input_data.csv')
-    os.remove('index.html')  # Add this line to remove index.html
+    # os.remove('index.html')  # Add this line to remove index.html
